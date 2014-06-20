@@ -10,6 +10,7 @@ const
 express = require('express'), bodyParser = require('body-parser'), // this allows us to pass JSON values to the server (see app.put below)
 app = express();
 
+
 var myData = [{
     "id": 0,
     "action": "Flowers",
@@ -36,6 +37,10 @@ var myData = [{
     "quantity": 2
 }];
 
+var nextID = 4;
+
+
+
 // serve static content from the public folder 
 app.use("/", express.static(__dirname + '/public'));
 
@@ -51,7 +56,12 @@ app.use(function(req, res, next) {
 // get a particular item from the model
 app.get('/model/:id', function(req, res) {
     var n = req.params.id;
-    res.json(200, myData[n]);
+    var item = null;
+    for(var i=0; i<myData.length; i++){
+        if (myData[i].id == n)
+          item = myData[i];
+    }
+    res.json(200, item);
 });
 
 // get all items from the model
@@ -61,23 +71,45 @@ app.get('/showall.json', function(req, res) {
 
 // change an item in the model
 app.put('/model/:id', function(req, res) {
-    var n = req.params.id;
-    myData[n] = req.body;
+    var id = req.params.id;
+    var n = -1;
+    for(var i=0; i<myData.length; i++){
+        if (myData[i].id == id)
+          n=i;
+          break;
+    }
+    if (n >=0) {
+        myData[n] = req.body;
+    }
     // put in some error checking if n <= myData.length
     res.json(200, {});
 });
 
 // add new item to the model
 app.post('/model', function(req, res) {
-    req.body.id = myData.length;
+    console.log("post ... "+JSON.stringify(req.body));
+    req.body.id = nextID;
+    nextID++;
     myData.push(req.body);
     res.json(200, {});
 });
 
-// get a particular item from the model
+// delete a particular item from the model
 app.delete('/model/:id', function(req, res) {
-    var n = req.params.id;
-    myData.splice(n,1);
+    var id = req.params.id;
+    console.log("deleting "+id);
+    var n = -1;
+    for(var i=0; i<myData.length; i++){
+        console.log("testing "+JSON.stringify(myData[i]));
+        if (myData[i].id == id)
+          n=i;
+      
+    }
+    console.log("out of loop with n="+n);
+    if (n >= 0){
+        myData.splice(n,1);
+    }
+    console.log("myData = "+JSON.stringify(myData));
     res.json(200, {});
 });
 
