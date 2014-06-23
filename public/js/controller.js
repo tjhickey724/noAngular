@@ -31,36 +31,56 @@ var shoppingApp = (function($) {
             quantity: 0
         });
     }
+    
+    function editPrice(element){
+        var itemId = element.getAttribute("sid");
+        var itemVal = element.value;
+        var item;
+        console.log("item "+itemId+" has value "+itemVal);
+        item = myList.getElement(itemId);
+        item.price = itemVal;
+        refreshView();
+        
+    }
+    
+    function editQuantity(element){
+        var itemId = element.getAttribute("sid");
+        var itemVal = element.value;
+        var item;
+        console.log("item "+itemId+" has value "+itemVal);
+        item = myList.getElement(itemId);
+        item.quantity = itemVal;
+        refreshView();
+        
+    }
 
     function purchaseItem(element) {
-        console.log("purchasing item");
+        var itemId = element.getAttribute("sid");
+        var item;
+        console.log("purchasing item "+itemId);
+        item = myList.getElement(itemId);
+        item.purchased= !item.purchased;
+        refreshView();
     }
 
     function editItem(element) {
-
-    }
-    
-
-    function refreshTable() {
-        shoppingView.refreshTable(myList.items);
+        console.log("editing item "+element.getAttribute("sid"));
     }
 
-    initEventHandlers = function() {
-        $("#refreshBtn").on("click", refreshTable());
+    function refreshView(){
+        shoppingView.refreshView(myList);
     }
-    
-    function updateTitle(username){
-        var user = myList.user;
-        var newTitle = myList.user + " Super Shopping List";
-        $("#title").html(newTitle);
+
+    function reloadModel(){
+        myList.loadModel();
+        refreshView();
     }
 
     function start() {
         myList.loadModel();
         console.log("myList = " + JSON.stringify(myList));
-        initEventHandlers();
-        updateTitle(myList.user);
-        updateTotalPrice
+        shoppingView.refreshView(myList);
+
 
     }
 
@@ -69,7 +89,12 @@ var shoppingApp = (function($) {
         start: start,
         addItem: addItem,
         handleDeleteItem: handleDeleteItem,
-        refreshTable: refreshTable
+        refreshView: refreshView,
+        purchaseItem: purchaseItem,
+        editItem: editItem,
+        reloadModel: reloadModel,
+        editPrice: editPrice,
+        editQuantity: editQuantity
     }
 
     return (shoppingApp);

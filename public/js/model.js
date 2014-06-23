@@ -26,17 +26,20 @@ ShoppingList.prototype.loadModel = function() {
         url: "/showall.json",
     }).done(function(items) {
         myList.items = items;
-        shoppingApp.refreshTable();
+        shoppingView.refreshView(myList);
     });
-}
+};
 
 ShoppingList.prototype.getElement = function(id){
-    for(var item in this.items){
+    var item;
+    var i;
+    for(i=0; i<this.items.length; i++){
+        item = this.items[i];
         if(item.id == id){
             return(item);
         }
     }
-}
+};
 
 ShoppingList.prototype.addElement = function(newItem){
     console.log("sending "+JSON.stringify(newItem));
@@ -74,8 +77,13 @@ ShoppingList.prototype.deleteElement = function(id){
 
 ShoppingList.prototype.totalPrice = function(){
     var total=0;
-    for(item in this.items){
-        total += item.price*item.quantity;
+    var item;
+    var i;
+    for(i=0; i<this.items.length; i++){
+        item = this.items[i];
+        if (item.purchased){
+            total += item.price*item.quantity;
+        }
     }
     return total;
 }

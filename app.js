@@ -50,6 +50,7 @@ app.use(bodyParser.json());
 // create middleware to log the requests
 app.use(function(req, res, next) {
     console.log('%s %s %s', req.method, req.url, JSON.stringify(req.body));
+    console.log("myData = "+JSON.stringify(myData));
     next();
 });
 

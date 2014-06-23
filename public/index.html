@@ -16,9 +16,6 @@
   <div class="container">
     <div class="page-header">
         <h1> <span id="title">TITLE GOES HERE</span>
-            <span id="warninglevel" class="label label-default">
-  				WARNING
-            </span>
 
         </h1>
     </div>
@@ -31,7 +28,7 @@
     <div class="panel">
         <div class="input-group">
 		    <span class="input-group-btn" >
-			     <button id="refreshBtn" class="btn btn-default">
+			     <button id="refreshBtn" class="btn btn-default" onclick="shoppingApp.reloadModel()">
 				     Refresh</button>
 				</span>
             <input type="text" class="form-control" id="newItemName" />
@@ -52,7 +49,6 @@
                     <th>Item Price</th>
                     <th>Quantity</th>
 					<th>Total Price</th>
-					<th>Edit</th>
 					<th>Purchased</th>
 					<th>Delete</th>
                 </tr>
@@ -63,12 +59,12 @@
         </table>
 
         <div class="checkbox-inline">
-            <label><input id="showCompleteCheckbox" type="checkbox"> 
+            <label><input id="showCompleteCheckbox" type="checkbox" onclick="shoppingApp.refreshView()"> 
 	            Show Purchased Items</label>
         </div>
 
         <div class="checkbox-inline">
-            <label><input id="cutOffText" type="text" > 
+            <label><input id="cutOffText" type="text"  onchange="shoppingApp.refreshView()"> 
 	            Cutoff</label>
         </div>
     </div>
