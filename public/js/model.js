@@ -1,3 +1,13 @@
+/**
+  The ShoppingList class has all the methods for downloading the model
+  from the server, updating the model (and sending the updates to the server)
+  and refreshing the model by pulling down the server info.
+  
+  This is a little ugly because the Model code makes calls back to the app to
+  redraw the view when it makes changes, but we'll live with that for now!
+  
+**/
+
 function ShoppingList() {
     this.user = "Tim";
     this.cutoff = 0;
@@ -16,7 +26,7 @@ ShoppingList.prototype.loadModel = function() {
         url: "/showall.json",
     }).done(function(items) {
         myList.items = items;
-        refreshTable();
+        shoppingApp.refreshTable();
     });
 }
 
@@ -60,5 +70,13 @@ ShoppingList.prototype.deleteElement = function(id){
     }).done(function(items) {
         myList.loadModel();
     });
+}
+
+ShoppingList.prototype.totalPrice = function(){
+    var total=0;
+    for(item in this.items){
+        total += item.price*item.quantity;
+    }
+    return total;
 }
     
